@@ -8,7 +8,7 @@
 console.log('\n ---------------Sistema de Calculo de Medias Universitárias--------------- \n');
 
 //Import da biblioteca da calculadora (criado por nos)
-var calcularMedia = require('./modulo/medias.js');
+var calcular = require('./modulo/medias.js');
 
 //Import da biblioteca para entrada de dados
 var readline = require('readline')
@@ -22,90 +22,157 @@ var entradaDados = readline.createInterface({
 
 //Função de CallBack para retornar o nome do aluno, do professor e sexo de ambos
 entradaDados.question('Nome do aluno: \n', function (nomeAluno) {
+    let nomeAluno = nome
 
     entradaDados.question('Sexo do aluno [FEMININO | MASCULINO]: \n', function (sexoAluno) {
-        /* if (sexoAluno == 'feminino') {
-            console.log('relatorioFem');
-
-        } else if (sexoAluno == 'masculino') {
-            console.log('tchau');
-        } */
+        let sexoAluno = sexo1.toUpperCase()
 
         entradaDados.question('Nome do professor: \n', function (nomeProfessor) {
+            let nomeProfessor = nome
 
             entradaDados.question('Sexo do professor [FEMININO | MASCULINO]: \n', function (sexoProfessor) {
-                /* if (sexoProfessor == 'feminino') {
-                    console.log('oi');
+                let sexoProfessor = sexo.toUpperCase()
 
-                } else if (sexoProfessor == 'masculino') {
-                    console.log('tchau');
-                } */
 
                 entradaDados.question('Nome do curso: \n', function (nomeCurso) {
+                    let curso = nomeCurso
                     entradaDados.question('Nome da disciplina: \n', function (nomeDisciplina) {
-                        
+                        let disciplina = nomeDisciplina
+
+                        console.log('\n-------------------Notas-------------------\n')
+
                         entradaDados.question('Digite a nota 1: \n', function (nota1) {
-                            let primeiraNota = Number(nota1);
+                            let nota1 = valor1.replace(',', '.')
 
                             entradaDados.question('Digite a nota 2: \n', function (nota2) {
-                                let segundaNota = Number(nota2);
+                                let nota2 = valor1.replace(',', '.')
+
                                 entradaDados.question('Digite a nota 3: \n', function (nota3) {
-                                    let terceiraNota = Number(nota3);
+                                    let nota3 = valor1.replace(',', '.')
+
                                     entradaDados.question('Digite a nota 4: \n', function (nota4) {
-                                        let quartaNota = Number(nota4);
-                                        let media = 0;
-                                        let resultado;
-                                        media = (Number(primeiraNota) + Number(segundaNota) + Number(terceiraNota) + Number(quartaNota))/4;
-                                        
+                                        let nota4 = valor1.replace(',', '.')
+
+                                        let resultado = calcular.calcularMedia(nota1, nota2, nota3, nota4)
+
+
 
                                         //tratativa de erros
-                                        if (primeiraNota == '' || segundaNota == '' || terceiraNota == '' || quartaNota == '') {
+                                        if (sexoAluno != 'FEMININO' && sexoProfessor != 'FEMININO' &&
+                                            sexoAluno != 'MASCULINO' && sexoProfessor != 'MASCULINO') {
+                                            console.log('ERRO: Por favor, digite apenas MASCULINO ou FEMININO')
+                                        } else if (nota1 == '' || nota2 == '' || nota3 == '' || nota4 == '') {
                                             console.log('ERRO: É necessário digitar algum valor na entrada.');
-                                        } else if (primeiraNota > 100 || segundaNota > 100 || terceiraNota > 100 || quartaNota > 100) {
-                                            console.log('ERRO! Digite um número menor ou igual a 100');  
-                                        } else if (primeiraNota < 0 || segundaNota < 0 || terceiraNota < 0 || quartaNota < 0) {
-                                            console.log('ERRO! Digite um número maior ou igual a zero');   
-                                        }else if (media >= 50 && media <= 69){
+                                            entradaDados.close()
+                                        } else if (nota1 > 100 || nota2 > 100 || nota3 > 100 || nota4 > 100) {
+                                            console.log('ERRO! Digite um número menor ou igual a 100');
+                                        } else if (nota1 < 0 || nota2 < 0 || nota3 < 0 || nota4 < 0) {
+                                            console.log('ERRO! Digite um número maior ou igual a zero');
+                                        } else if (media >= 50 && media <= 69) {
                                             entradaDados.question('Digite a nota do exame final.\n')
                                             let notaExame = Number(exameFinal);
-                                            media = (media + exameFinal ) / 2 
+                                            media = (media + exameFinal) / 2
                                             return resultado
-                                        }else if (resultado <50) {
-                                                console.log('Sua média é: ' + media + ' |Você está REPROVADO');      
-                                        }else if (media >= 70) {
-                                                    console.log('Sua média é: ' + media + ' |Você está APROVADO');      
-                                        } else {
-                                            console.log('Média final: ' + media.toFixed(1));
-                                           
-                                            //console.log(media);
+                                        } else if (aluno == '' || professor == '' || sexoAluno == '' || sexoProfessor == '' || curso == '' || disciplina == '' || nota_1 == '' || nota_2 == '' || nota_3 == '' || nota_4 == '') {
+                                            console.log('ERRO: É necessário preencher todos os dados para ser gerado o relatório corretamente!')
+                                            entradaDados.close()
                                         }
-                                        
-                                        /* if(media >= 70){
-                                            console.log('Parabens! Aluno aprovado.\n')
-                                        }else if (media >= 50 && media <= 69){
-                                            entradaDados.question('Digite a nota do exame final.\n')
-                                                var resultado = (media + exameFinal ) / 2 
-                                        }else if(resultado >=60) { 
-                                            console.log('Status: Reprovado!!')
-                                        }else {
-                                            console.log('Status: Aprovado!! Parabéns')
-                                        } */
-                                    });
 
-                                });
+                                        else {
+                                            if (resultado < 50) {
+                                                console.log('\n-------------------Relatório-------------------\n')
+                                                if (sexoAluno == 'FEMININO')
+                                                    console.log(`A aluna ${aluno} foi reprovada na disciplina ${disciplina}.`)
+                                                else
+                                                    console.log(`O aluno ${aluno} foi reprovado na disciplina ${disciplina}.`,
+                                                        `Curso: ${curso}`)
+                                                if (sexoProfessor == 'FEMININO') {
+                                                    console.log(`Professora: ${professor}`)
+                                                } else
+                                                    console.log(`Professor: ${professor}`,
+                                                        `Notas da aluna: ${nota_1}, ${nota_2}, ${nota_3}, ${nota_4}`,
+                                                        `Média Final: ${resultado}`)
+                                                entradaDados.close()
+                                            }
 
-                            });
+                                            else if (media >= 70) {
+                                                console.log('\n-------------------Relatório-------------------\n')
 
-                        });
+                                                if (sexoAluno == 'FEMININO')
+                                                    console.log(`A aluna ${aluno} foi APROVADA na disciplina ${disciplina}.`)
+                                                else
+                                                    console.log(`O aluno ${aluno} foi APROVADO na disciplina ${disciplina}.`,
+                                                        `Curso: ${curso}`)
 
-                    });
+                                                if (sexoProfessor == 'FEMININO')
+                                                    console.log(`Professora: ${professor}`)
+                                                else
+                                                    console.log(`Professor: ${professor}`,
+                                                        `Notas do aluno: ${nota_1}, ${nota_2}, ${nota_3}, ${nota_4}`,
+                                                        `Média Final: ${resultado}`)
+                                                entradaDados.close()
 
-                });
+                                            } else {
+                                                entradaDados.question('Digite a nota do exame:\n', function (valorExame) {
+                                                    let valorExame = notaExame
+                                                    let resultadoExame = calcular.calcularMediaExame(resultado, notaExame)
 
-            });
+                                                    if (resultadoExame == '' || resultadoExame < 0 || resultadoExame > 100 || isNaN(notaExame)) {
+                                                        console.log('ERRO: É preciso digitar um NÚMERO entre 0 e 100!')
+                                                        entradaDados.close()
+                                                    } else {
+                                                        if (resultadoExame < 50) {
+                                                            console.log('\n-------------------Relatório-------------------\n')
+                                                            console.log('\n')
+                                                            if (sexoAluno == 'FEMININO')
+                                                                console.log(`A aluna ${aluno} foi REPROVADO pelo exame na disciplina ${disciplina}.`)
+                                                            else
+                                                                console.log(`O aluno ${aluno} foi REPROVADO pelo exame na disciplina ${disciplina}.`,
+                                                                    `Curso: ${curso}`)
+                                                            if (sexoProfessor == 'FEMININO')
+                                                                console.log(`Professora: ${professor}\n`)
+                                                            else
+                                                                console.log(`Professor: ${professor}\n`,
+                                                                    `Notas do aluno: ${nota_1}, ${nota_2}, ${nota_3}, ${nota_4}, Exame: ${notaExame}\n`,
+                                                                    `Média Final: ${resultado}`,
+                                                                    `Média final Exame: ${resultadoExame}`)
+                                                            entradaDados.close()
 
-        });
+                                                        } else {
+                                                            console.log('\n-------------------Relatório-------------------\n')
+                                                            console.log('\n')
+                                                            if (sexoAluno == 'FEMININO')
+                                                                console.log(`A aluna ${aluno} foi APROVADA pelo exame na disciplina ${disciplina}.`)
+                                                            else
+                                                                console.log(`O aluno ${aluno} foi APROVADO pelo exame na disciplina ${disciplina}.`,
+                                                                    `Curso: ${curso}\n`)
+                                                            if (sexoProfessor == 'FEMININO')
+                                                                console.log(`Professora: ${professor}\n`)
+                                                            else
+                                                                console.log(`Professor: ${professor}\n`,
+                                                            `Notas do aluno: ${nota_1}, ${nota_2}, ${nota_3}, ${nota_4}, Exame: ${notaExame}\n`,
+                                                            `Média Final: ${resultado}`,
+                                                            `Média final Exame: ${resultadoExame}`)
+                                                            entradaDados.close()
 
-    });
+                                                        }
 
-});
+                                                    }
+                                                }
+                                                
+
+                                            }
+                                        }
+                                                  
+
+                             
+
+                          
+
+                        
+
+                   
+
+                
+
+            

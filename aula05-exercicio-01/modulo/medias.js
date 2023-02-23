@@ -5,33 +5,27 @@
  * Versão: 1.0 
  */
 
-const calcularMedia = function(){
-    //variáveis
-    let nomeAluno = aluno;
-    let nomeProfessor = professor;
-    let sexoAluno = sexoAluno.toUpperCase();
-    let sexoProf = sexoProf.toUpperCase();
-    let nomeCurso = curso;
-    let nomeDisciplina = disciplina;
+const calcularMedia = function (nota1, nota2, nota3, nota4) {
+    let nota1 = Number(valor1);
+    let nota2 = Number(valor2);
+    let nota3 = Number(valor3);
+    let nota4 = Number(valor4);
 
-    //notas 
-    let primeiraNota = Number(nota1);
-    let segundaNota = Number(nota2);
-    let terceiraNota = Number(nota3);
-    let quartaNota = Number(nota4);
-    let notaExame = Number(exame);
-
-    /* const resultado = function(){
-        resultado = media;
-    } */
-    
-    
-    //media = (nota1, nota2, nota3, nota4) => (nota1 + nota2 + nota3 + nota4) / 4
-
-    
-
+    let resultado = ((nota1 + nota2 + nota3 + nota4) / 4);
+    return resultado
 }
 
+const calcularMediaExame = function (media, valorExame) {
+
+    let valorExame = notaExame;
+    let mediaExame = media;
+    let resultadoExame = (Number(mediaExame) + Number(notaExame)) / 2
+
+    return resultadoExame
+}
+
+
 module.exports = {
-    calcularMedia
+    calcularMedia,
+    calcularMediaExame
 }
