@@ -7,7 +7,7 @@
 
 console.log('Sistema de Cálculo');
 
-var matematica = require('./modulo/calculadora.js')
+var matematica = require('./modulo/calculadora.js.js')
 //import da biblioteca
 var readline = require('readline');
 const { stdin, stdout } = require('process');
