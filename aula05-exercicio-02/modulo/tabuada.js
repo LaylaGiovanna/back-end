@@ -5,25 +5,23 @@
  * Versão: 1.0
  */
 
-const tabuada = function(multiplicandoMin, multiplicandoMax, multiplicadorMin, multiplicadorMax) {
+function tabuada (multiplicandoMin, multiplicandoMax, multiplicadorMin, multiplicadorMax) {
     let minMultiplicando = multiplicandoMin
     let maxMultiplicando = multiplicandoMax
     let minMultiplicador = multiplicadorMin
     let maxMultiplicador = multiplicadorMax
     let contador
 
-    while (minMultiplicando <= maxMultiplicando) {
-        console.log('\n-----------------' + minMultiplicando + '-----------------\n')
-        contador = minMultiplicador
-        while (contador <= maxMultiplicador) {
-            let resultado = minMultiplicando * contador
-            console.log(minMultiplicando + 'x' + contador + '=' + resultado)
-            contador++
+    for(let multiplicando = multiplicandoMin; multiplicando <= multiplicandoMax; multiplicando++) {
+        console.log('\n*** ' + multiplicando + ' ***');
+    
+        for(let multiplicador = multiplicadorMin; multiplicador <= multiplicadorMax; multiplicador++) {
+          let resultado = multiplicando * multiplicador;
+          console.log(multiplicando + 'x' + multiplicador + ' = ' + resultado);
+
         }
-        minMultiplicando++
     }
 }
-
 
 module.exports = {
     tabuada
