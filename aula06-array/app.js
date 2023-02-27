@@ -184,7 +184,6 @@ const listagemProdutos = function () {
                 console.log('° Tipo: ' + dadosTipo);
             });
         }
-
     });
 
 
