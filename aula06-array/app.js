@@ -4,6 +4,18 @@
 const listaNomes = ['jose', 'maria', 'luiz', 'carlos']
 
 const listaProdutos = ['Teclado', 'Mouse', 'Monitor', 'Computador', 'Fone', 'Impressora', 'Scanner', 'WebCam']
+
+//JSON - exemplo de JSON com estrutura de array
+const listaProdutosJson = {}
+/* produtos = {
+            [
+                { nome : 'Mouse', cor:  'Preto' , quantidade : 50 },
+                { nome : 'Monitor', cor:  'Branco' , quantidade : 100}
+            ]
+        } */
+
+
+
 //esse array de cima substitui isso aqui:
 /* const nomes1 = 'jose'
 const nomes2 = 'maria'
@@ -100,27 +112,112 @@ const filtrandoElementos = function () {
 
 const removerElementos = function (array, nomeItem) {
     let novaLista = array.slice()
-    
+
     let status;
     let nome = nomeItem;
     let indice = novaLista.indexOf(nome);
 
     //splice - permtie remover um elemento do array pelo indice
-    
+
     if (indice >= 0) {
         novaLista.splice(indice, 1)
         status = true
     } else {
         status = false
     }
-    
-    if(status)
+
+    if (status)
         return novaLista;
     else
-        return status;    
-    
+        return status;
+
 };
 
 
-console.log(removerElementos(listaProdutos, 'Monitor'));
-console.log(listaProdutos)
+const listagemProdutos = function () {
+    let listProdutosJson = {};
+
+    let listProdutos = [
+        { nome: 'Teclado DELL', valor: 200, quantidade: 50 },
+        { nome: 'Monitor DELL', valor: 1000, quantidade: 70 },
+        { nome: 'Mouse DELL', valor: 300, quantidade: 350 },
+    ];
+
+    let listCores = ['Branco', ' Preto', ' Cinza'];
+    let listTipoTeclados = ['Mecânico', ' Semi-mecânico', ' Membrana'];
+    let listTipoMonitores = ['LCD', ' Full-HD', ' 4K', ' OLED'];
+
+    //Adiciona chaves (opções) no Teclado
+    listProdutos[0].cores = listCores;
+    listProdutos[0].tipo = listTipoTeclados;
+
+    //Adiciona chaves (opções) no Monitor
+    listProdutos[1].cores = listCores;
+    listProdutos[1].tipo = listTipoMonitores;
+
+    //Adiciona chaves (opções) no Mouse
+    listProdutos[2].cores = listCores;
+
+    //Adiciona uma chave produtos e coloca toda a estrutura dos produtos dentro dela
+    listProdutosJson.produtos = listProdutos;
+
+
+//REPETIÇÃO
+    //retorna todo os dados dos produtos (1º nível dos dados do JSON)
+    listProdutosJson.produtos.forEach(function (dadosProduto) {
+        console.log('\n- Nome: ' + dadosProduto.nome);
+        console.log('- Valor: ' + dadosProduto.valor);
+        console.log('- Quantidade: ' + dadosProduto.quantidade);
+
+        //validação para tratar quando não existe cores de produto
+        if (dadosProduto.cores != undefined) {
+            //essa linha retorna todas as cores existentes para cada produto    
+            dadosProduto.cores.forEach(function (dadosCores) {
+                console.log('° Cores: ' + dadosCores);
+            });
+        }
+
+        //validação para tratar quando não existe tipos de produto
+        if (dadosProduto.tipo != undefined) {
+            //essa linha retorna todos os tipos existentes para cada produto
+            dadosProduto.tipo.forEach(function (dadosTipo) {
+                console.log('° Tipo: ' + dadosTipo);
+            });
+        }
+
+    });
+
+
+
+    /* console.log('\n- Nome: ' + listProdutosJson.produtos[0].nome);
+    console.log('- Valor: ' + listProdutosJson.produtos[0].valor);
+    console.log('- Quantidade: ' + listProdutosJson.produtos[0].quantidade);
+    console.log('- Cor: ' + listProdutosJson.produtos[0].cores);
+    console.log('- Tipo: ' + listProdutosJson.produtos[0].tipo + '\n');
+
+
+    console.log('- Nome: ' + listProdutosJson.produtos[1].nome);
+    console.log('- Valor: ' + listProdutosJson.produtos[1].valor);
+    console.log('- Quantidade: ' + listProdutosJson.produtos[1].quantidade);
+    console.log('- Cor: ' + listProdutosJson.produtos[1].cores);
+    console.log('- Tipo: ' + listProdutosJson.produtos[1].tipo + '\n');
+
+    console.log('- Nome: ' + listProdutosJson.produtos[2].nome);
+    console.log('- Valor: ' + listProdutosJson.produtos[2].valor);
+    console.log('- Quantidade: ' + listProdutosJson.produtos[2].quantidade);
+    console.log('- Cor: ' + listProdutosJson.produtos[2].cores  + '\n'); */
+
+
+
+    //array dentro de Json
+    /* listaProdutosJson.produtos = listaProdutos;
+    listaProdutosJson.clientes = listaNomes; */
+
+    /*console.log(listaProdutosJson.clientes[1])
+     console.log(listaProdutosJson) */
+};
+
+listagemProdutos();
+
+/* console.log(removerElementos(listaProdutos, 'Monitor'));
+console.log(listaProdutos) */
