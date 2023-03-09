@@ -22466,35 +22466,111 @@ var estadosCidades = {
     ]
 };
 
-/*return a lista de todos os estados do Brasil*/
-const getListaDeEstados = function() {
+/*return a lista de todos os estados do Brasil em sigla*/
+let getListaDeEstados = () => {
+    let uf = []
+    estadosCidades.estados.forEach((estado) => {
+        uf.push(estado.sigla)
+    })
+    uf.push()
+    return { 'Uf' : uf, 'Quantidade' : uf.push()}
+}
+// console.log('\n***********Uf***********\n');
+// console.log(getListaDeEstados())
 
+
+/*return as informações referente a um estado do Brasil
+    nome sigla capital e região*/
+let getDadosEstados = (sigla) => {
+    let dados = ""
+
+    estadosCidades.estados.forEach((estado) => {
+        if (estado.sigla == sigla.toUpperCase()) {
+            dados = {
+                nome: estado.nome,
+                sigla: estado.sigla,
+                capital: estado.capital,
+                regiao: estado.regiao,
+            }
+        }
+    })
+    return dados != "" ? dados : false
+    
 }
 
-/*return as informações referente a um estado do Brasi*/
-const getDadosEstado = function() {
+// console.log('\n***********Estados***********\n');
+// console.log(getDadosEstados('sp'));
 
-}
 
 /*return as informações referente a capital de um estado do Brasil*/
-const getCapitalEstado = function() {
+let getCapitalEstado = (sigla) => {
+    let dados = ""
 
+    estadosCidades.estados.forEach((estado) => {
+        if (estado.sigla == sigla.toUpperCase()){
+            dados = {
+                sigla: estado.sigla,
+                nome: estado.nome,
+                capital: estado.capital,
+            }
+        }
+
+    })
+    return dados != "" ? dados : false
+    
 }
+// console.log('\n***********Regiôes***********\n');
+// console.log(getCapitalEstado('rj'));
+
 
 /*return  as informações referente aos estados do Brasil conforme a sua região */
-const getEstadosRegiao = function() {
+const getEstadosRegiao = function(regioesEstado) {
+    let arrayRegiao = []
+    let jRegiao = {}
+    let jSON = {}
 
+    estadosCidades.estados.forEach(function(estado) {
+        if (regioesEstado == estado.regiao) {
+            jRegiao = { uf: estado.sigla, descricao: estado.nome }
+            arrayRegiao.push(jRegiao)
+        }
+    })
+    jSON = { regiao: regioesEstado, estados: arrayRegiao }
+
+    return jSON
 }
+// console.log(getEstadosRegiao('Norte'));
+
 
 /*return as informações referente aos estados que formam a capital do Brasil*/
-const getCapitalPais = function() {
+const getCapitaisPais = function() {
+    let arrayCapitais = []
+    let json = {}
 
+    estadosCidades.estados.forEach(function(estado) {
+        if (estado.capital_pais != undefined) {
+
+            let dados = {
+                uf: estado.sigla,
+                regiao: estado.regiao,
+                descricao: estado.nome,
+                capital: estado.capital,
+                capital_atual: estado.capital_pais.capital,
+                capital_pais_ano_inicio: estado.capital_pais.ano_inicio,
+                capital_pais_ano_termino: estado.capital_pais.ano_fim,
+            }
+            arrayCapitais.push(dados)
+
+            json.capitais = arrayCapitais
+
+        }
+
+    })
+    return json
 }
+// console.log(getCapitaisPais())
 
 /*return uma lista de cidades, filtrado pela sigla do estado*/
 const getCidades = function() {
 
 }
-
-
-console.log(getListaDeEstados.sigla)
