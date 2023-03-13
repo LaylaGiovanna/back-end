@@ -19,18 +19,24 @@
 
 
 /* Import das dependencias para criar a API */
-
 //responsavel pelas requisições
 const express = require('express');
+
 //resposável pelas permissões das requisições
 const cors = require('cors');
+
 //responsável pela manipulação do body da requisição
 const bodyParser = require('body-parser');
+
+//import do arquivo de funcoes
+const estadosCidades = require('./modulo/estados_cidades.js')
 
 
 //cria um objeto com as informações da classe express
 const app = express();
 
+
+//define as permissões no header da API
 app.use((request, response, next) => {
     //Permite gerenciar a origem das requisições da API
     //'*' - de qualquer lugar (PUBLICA)
@@ -47,18 +53,127 @@ app.use((request, response, next) => {
 });
 
 
+
+
 //endPoints, cors, async(requisição asíncrona)
 
+/* ************************FUNÇÃO 1************************ */
 //endPoint para Listar os Estados
-app.get('/estados', cors(), async function(request, response, next) {
+app.get('/listaEstados', cors(), async function(request, response, next) {
 
-    const estadosCidades = require('./modulo/estados_cidades.js')
 
+
+    //chama a funcao que retorna os estados
     let listaDeEstados = estadosCidades.getListaDeEstados();
+    //tratamento p validar se a funçao validou o processamento
+    if (listaDeEstados) {
+        //retorna o json e o status code
+        response.json(listaDeEstados);
+        response.status(200);
+    } else {
+        response.status(500);
+    }
+});
 
-    response.json(listaDeEstados);
-    response.status(200);
 
+/* ************************FUNÇÃO 2************************ */
+//endpoint: Lista as caracteristicas do estado pela sigla
+//1° nome é oq retorna e depois o nome
+app.get('/dadosEstado/sigla/:uf', cors(), async function(request, response, next) {
+    //:uf - é uma variável que será utilizada paraa passagem de valores, 
+    //na URL da requisição
+
+    //recebe o valor da variável uf que será encaminhada 
+    //na URL da requisição
+    let siglaEstado = request.params.uf;
+    let statusCode;
+    let dadosEstado = {};
+
+    if (siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)) {
+        dadosEstado.message = "nao é possivel processar a requisição pois a sigla do estado nao foi informada ou nao atende a quantidade de caracteres (2 digitos)";
+        statusCode = 400;
+    } else {
+        //chama a função que filtra o estado pela sigla 
+        let estado = estadosCidades.getDadosEstados(siglaEstado)
+
+        //valida se houve retorno válido da função
+        if (estado) {
+            dadosEstado = estado; //Estado encontrado
+            statusCode = 200;
+        } else {
+            statusCode = 404; //Estado não encontrado
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosEstado)
+});
+
+
+/* ************************FUNÇÃO 3************************ */
+app.get('/capitalEstado/sigla/:uf', cors(), async function(request, response, next) {
+    let siglaEstado = request.params.uf;
+    let statusCode;
+    let dadosCapitalEstado = {};
+
+    if (siglaEstado == '' || siglaEstado == undefined || siglaEstado.length != 2 || !isNaN(siglaEstado)) {
+        dadosCapitalEstado.message = "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)";
+        statusCode = 400;
+    } else {
+        //chama a função que filtra o estado pela sigla 
+        let capital = estadosCidades.getCapitalEstado(siglaEstado)
+
+        //valida se houve retorno válido da função
+        if (capital) {
+            statusCode = 200; //Estado encontrado
+            dadosCapitalEstado = capital;
+        } else {
+            statusCode = 404; //Estado não encontrado
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosCapitalEstado)
+});
+
+
+/* ************************FUNÇÃO 4************************ */
+app.get('/estadosRegiao/regiao/descricao/:jRegiao', cors(), async function(request, response, next) {
+    let nomeRegiao = request.params.jRegiao;
+    let statusCode;
+    let dadosEstadoRegiao = {};
+
+    if (nomeRegiao == '' || nomeRegiao == undefined || !isNaN(nomeRegiao)) {
+        dadosEstadoRegiao.message = "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)";
+        statusCode = 400;
+    } else {
+        //chama a função que filtra o estado pela sigla 
+        let jRegiao = estadosCidades.getEstadosRegiao(nomeRegiao)
+
+        //valida se houve retorno válido da função
+        if (jRegiao) {
+            statusCode = 200; //Estado encontrado
+            dadosEstadoRegiao = jRegiao;
+        } else {
+            statusCode = 404; //Estado não encontrado
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosEstadoRegiao)
+
+    /* if (nomeRegiao == '' || nomeRegiao == undefined || !isNaN(nomeRegiao)) {
+        response.status(400);
+        response.json({ message: "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)" })
+    } else {
+        //chama a função que filtra o estado pela sigla 
+        let jRegiao = estadosCidades.getEstadosRegiao(nomeRegiao)
+
+        //valida se houve retorno válido da função
+        if (jRegiao) {
+            response.status(200); //Estado encontrado
+            response.json(jRegiao);
+        } else {
+            response.status(404); //Estado não encontrado
+        }
+    } */
 });
 
 
