@@ -22486,6 +22486,7 @@ function getListaDeEstados() {
 // console.log('\n***********Uf***********\n');
 // console.log(getListaDeEstados())
 
+
 /* ************************FUNÇÃO 2************************ */
 function getDadosEstados(sigla) {
     /*return as informações referente a um estado do Brasil
@@ -22507,6 +22508,7 @@ function getDadosEstados(sigla) {
 // console.log('\n***********Estados***********\n');
 // console.log(getDadosEstados('sp'));
 
+
 /* ************************FUNÇÃO 3************************ */
 function getCapitalEstado(sigla) {
     /*return as informações referente a capital de um estado do Brasil*/
@@ -22526,6 +22528,7 @@ function getCapitalEstado(sigla) {
 // console.log('\n***********Regiões***********\n');
 // console.log(getCapitalEstado('ro'));
 
+
 /* ************************FUNÇÃO 4************************ */
 function getEstadosRegiao(regioesEstado) {
     /*return  as informações referente aos estados do Brasil conforme a sua região */
@@ -22534,7 +22537,7 @@ function getEstadosRegiao(regioesEstado) {
     let jSON = {};
 
     estadosCidades.estados.forEach(function(estado) {
-        if (regioesEstado == estado.regiao) {
+        if (regioesEstado.toUpperCase() == estado.regiao.toUpperCase()) {
             jRegiao = { uf: estado.sigla, descricao: estado.nome };
             arrayRegiao.push(jRegiao);
         }
@@ -22543,7 +22546,8 @@ function getEstadosRegiao(regioesEstado) {
 
     return jSON;
 }
-// console.log(getEstadosRegiao('Norte'));
+//console.log(getEstadosRegiao('Norte'));
+
 
 /* ************************FUNÇÃO 5************************ */
 function getCapitaisPais() {
@@ -22569,7 +22573,7 @@ function getCapitaisPais() {
     });
     return json;
 }
-// console.log(getCapitaisPais())
+//console.log(getCapitaisPais())
 
 /* ************************FUNÇÃO 6************************ */
 function getCidades(sigla) {

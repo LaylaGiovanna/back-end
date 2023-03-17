@@ -59,7 +59,7 @@ app.use((request, response, next) => {
 
 /* ************************FUNÇÃO 1************************ */
 //endPoint para Listar os Estados
-app.get('/listaEstados', cors(), async function(request, response, next) {
+app.get('/v1/senai/listaEstados', cors(), async function(request, response, next) {
 
 
 
@@ -79,7 +79,7 @@ app.get('/listaEstados', cors(), async function(request, response, next) {
 /* ************************FUNÇÃO 2************************ */
 //endpoint: Lista as caracteristicas do estado pela sigla
 //1° nome é oq retorna e depois o nome
-app.get('/dadosEstado/sigla/:uf', cors(), async function(request, response, next) {
+app.get('/v1/senai/dadosEstado/sigla/:uf', cors(), async function(request, response, next) {
     //:uf - é uma variável que será utilizada paraa passagem de valores, 
     //na URL da requisição
 
@@ -110,7 +110,7 @@ app.get('/dadosEstado/sigla/:uf', cors(), async function(request, response, next
 
 
 /* ************************FUNÇÃO 3************************ */
-app.get('/capitalEstado/sigla/:uf', cors(), async function(request, response, next) {
+app.get('/v1/senai/capitalEstado/sigla/:uf', cors(), async function(request, response, next) {
     let siglaEstado = request.params.uf;
     let statusCode;
     let dadosCapitalEstado = {};
@@ -136,8 +136,8 @@ app.get('/capitalEstado/sigla/:uf', cors(), async function(request, response, ne
 
 
 /* ************************FUNÇÃO 4************************ */
-app.get('/estadosRegiao/regiao/descricao/:jRegiao', cors(), async function(request, response, next) {
-    let nomeRegiao = request.params.jRegiao;
+app.get('/v1/senai/estadosRegiao/sigla/:regiao', cors(), async function(request, response, next) {
+    let nomeRegiao = request.params.regiao;
     let statusCode;
     let dadosEstadoRegiao = {};
 
@@ -146,12 +146,12 @@ app.get('/estadosRegiao/regiao/descricao/:jRegiao', cors(), async function(reque
         statusCode = 400;
     } else {
         //chama a função que filtra o estado pela sigla 
-        let jRegiao = estadosCidades.getEstadosRegiao(nomeRegiao)
+        let regiao = estadosCidades.getEstadosRegiao(nomeRegiao)
 
         //valida se houve retorno válido da função
-        if (jRegiao) {
+        if (regiao) {
             statusCode = 200; //Estado encontrado
-            dadosEstadoRegiao = jRegiao;
+            dadosEstadoRegiao = regiao;
         } else {
             statusCode = 404; //Estado não encontrado
         }
@@ -159,23 +159,77 @@ app.get('/estadosRegiao/regiao/descricao/:jRegiao', cors(), async function(reque
     response.status(statusCode);
     response.json(dadosEstadoRegiao)
 
-    /* if (nomeRegiao == '' || nomeRegiao == undefined || !isNaN(nomeRegiao)) {
-        response.status(400);
-        response.json({ message: "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)" })
-    } else {
-        //chama a função que filtra o estado pela sigla 
-        let jRegiao = estadosCidades.getEstadosRegiao(nomeRegiao)
-
-        //valida se houve retorno válido da função
-        if (jRegiao) {
-            response.status(200); //Estado encontrado
-            response.json(jRegiao);
-        } else {
-            response.status(404); //Estado não encontrado
-        }
-    } */
 });
 
+/* ************************FUNÇÃO 5************************ */
+app.get('/v1/senai/capitaisPais', cors(), async function(request, response, next) {
+    let nomeCapitais = request.query.capital;
+    let statusCode;
+    let dadosCapitaisPais = {};
+
+    if (nomeCapitais == '' || nomeCapitais == undefined || !isNaN(nomeCapitais)) {
+        dadosCapitaisPais.message = "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)";
+        statusCode = 400;
+    } else {
+        //chama a função que filtra o estado pela sigla 
+        let capital = estadosCidades.getCapitaisPais(nomeCapitais)
+
+        //valida se houve retorno válido da função
+        if (capital) {
+            statusCode = 200; //Estado encontrado
+            dadosCapitaisPais = capital;
+        } else {
+            statusCode = 404; //Estado não encontrado
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosCapitaisPais)
+
+});
+
+
+/* ************************FUNÇÃO 6************************ */
+//Endpoint lista de cidades filtradas pela sigla do estado
+app.get('/v1/senai/cidades/', cors(), async function(request, response, next) {
+    //recebe o valor da variável que será enviada por QueryString
+    /* 
+        -Ex: www.uol.com.br?uf=sp -- oq esta antes do ? é o endereço do 
+            site. oq estiver dps sao variaveis q tao sendo encaminhadas
+
+        -Usamos a query para receber diversas variáveis para realizar filtros
+        
+        -Usamos o params para receber ID(PK), geralmente 
+            para fazer PUT, DELETE, GET
+     */
+    let siglaEstado = request.query.uf
+    let statusCode;
+    let dadosCidades = {};
+
+    if (siglaEstado == '' || siglaEstado == undefined || !isNaN(siglaEstado)) {
+        dadosCidades.message = "Não é possível processar a requisição, pois a sigla do estado não foi informada ou não atende a quantidade de caracteres (2 digitos)";
+        statusCode = 400;
+    } else {
+        //chama a função que filtra o estado pela sigla 
+        let cidades = estadosCidades.getCidades(siglaEstado)
+
+        //valida se houve retorno válido da função
+        if (cidades) {
+            statusCode = 200; //Estado encontrado
+            dadosCidades = cidades;
+        } else {
+            statusCode = 404; //Estado não encontrado
+        }
+    }
+    response.status(statusCode);
+    response.json(dadosCidades)
+
+});
+
+//Endpoint versão 2: lista de cidades filtradas pela sigla 
+//do estado com mais detalhes
+app.get('/v2/senai/cidades/', cors(), async function(request, response, next) {
+
+});
 
 //permite carregar os endPoint criados e aguardar as requisições
 //pelo protocolo HTTP na porta 8080
