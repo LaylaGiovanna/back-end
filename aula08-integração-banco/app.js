@@ -50,12 +50,15 @@ app.use((request, response, next) => {
  * Data: 14/04/2023
  **************************************************************/
 
+//Criando uma const para realizar o processor de padronização de dados que vão chegar no body da requisição
+var bodyJSON = bodyParser.json();
+
+//Import da controller aluno
+var controllerAluno = require('./controller/controller_aluno.js');
+
 
 //EndPoint: Retorna todos os dados de alunos
-app.get('/v1/lion-school/aluno', cors(), async function(request, response) {
-
-    //Import da controller aluno
-    let controllerAluno = require('./controller/controller_aluno.js');
+app.get('/v1/lion-school/aluno', cors(), async function (request, response) {
 
     let dados = await controllerAluno.selecionarTodosAlunos();
 
@@ -70,29 +73,40 @@ app.get('/v1/lion-school/aluno', cors(), async function(request, response) {
 });
 
 //EndPoint: Retorna dados do aluno pelo ID
-app.get('/v1/lion-school/aluno/:id', cors(), async function(request, response) {
+app.get('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
 
 
 });
 
 //EndPoint: Inserir um novo aluno
-app.post('/v1/lion-school/aluno', cors(), async function(request, response) {
+app.post('/v1/lion-school/aluno', cors(), bodyJSON , async function (request, response) {
+    //Recebe os dados encaminhados no body da requisição
+    let dadosBody = request.body;
 
+    // console.log(dadosBody)
+
+    let resultInsertDados = await controllerAluno.inserirAluno(dadosBody);
+
+    // console.log(resultInsertDados)
+
+    //Retorna um statusCode e um message
+    response.status(resultInsertDados.status)
+    response.json(resultInsertDados)
 
 });
 //EndPoint: Atualiza um aluno pelo id
-app.put('/v1/lion-school/aluno/:id', cors(), async function(request, response) {
+app.put('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
 
 
 });
 
 //EndPoint: Exclui um aluno pelo ID
-app.delete('/v1/lion-school/aluno/:id', cors(), async function(request, response) {
+app.delete('/v1/lion-school/aluno/:id', cors(), async function (request, response) {
 
 
 });
 
 
-app.listen(8080, function() {
+app.listen(8080, function () {
     console.log('Servidor aguardando requisições na porta 8080!')
 });
